@@ -1,0 +1,876 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Task - Task Manager</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .brand h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .brand p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: white;
+            color: #334155;
+            border: 1px solid #dce3ed;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5eaf1;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .card-header {
+            margin-bottom: 28px;
+        }
+
+        .card-header h2 {
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        .card-header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #d8e0ea;
+            border-radius: 10px;
+            padding: 13px 14px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fff;
+            color: #172033;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.10);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #edf0f4;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .cancel-btn {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .save-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .hint {
+            margin-top: 7px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 700px) {
+
+            .page {
+                padding: 25px 15px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+
+<!-- TASKFLOW_BRAND_V2 -->
+<style>
+    body {
+        background:
+            radial-gradient(circle at 10% 10%, rgba(96,165,250,.45), transparent 28%),
+            radial-gradient(circle at 90% 5%, rgba(59,130,246,.35), transparent 25%),
+            linear-gradient(135deg, #1e40af 0%, #2563eb 45%, #0f4cbd 100%) !important;
+        background-attachment: fixed !important;
+    }
+
+    .taskflow-brandbar {
+        max-width: 900px;
+        margin: 0 auto 22px;
+        padding: 14px 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 20px;
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        box-shadow: 0 20px 50px rgba(15,23,42,.18);
+    }
+
+    .taskflow-logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .taskflow-logo {
+        width: 45px;
+        height: 45px;
+        padding: 5px;
+        border-radius: 13px;
+        background: white;
+    }
+
+    .taskflow-name {
+        color: white;
+        font-size: 21px;
+        font-weight: 850;
+        letter-spacing: -.6px;
+    }
+
+    .taskflow-tagline {
+        color: rgba(255,255,255,.72);
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .card {
+        border: 1px solid rgba(255,255,255,.8) !important;
+        box-shadow:
+            0 25px 60px rgba(15,23,42,.18) !important;
+    }
+
+    .back-btn {
+        transition: .2s ease !important;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
+<!-- TASKFLOW_BRAND_V2 -->
+<style>
+    body {
+        background:
+            radial-gradient(circle at 10% 10%, rgba(96,165,250,.45), transparent 28%),
+            radial-gradient(circle at 90% 5%, rgba(59,130,246,.35), transparent 25%),
+            linear-gradient(135deg, #1e40af 0%, #2563eb 45%, #0f4cbd 100%) !important;
+        background-attachment: fixed !important;
+    }
+
+    .taskflow-brandbar {
+        max-width: 900px;
+        margin: 0 auto 22px;
+        padding: 14px 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 20px;
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        box-shadow: 0 20px 50px rgba(15,23,42,.18);
+    }
+
+    .taskflow-logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .taskflow-logo {
+        width: 45px;
+        height: 45px;
+        padding: 5px;
+        border-radius: 13px;
+        background: white;
+    }
+
+    .taskflow-name {
+        color: white;
+        font-size: 21px;
+        font-weight: 850;
+        letter-spacing: -.6px;
+    }
+
+    .taskflow-tagline {
+        color: rgba(255,255,255,.72);
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .card {
+        border: 1px solid rgba(255,255,255,.8) !important;
+        box-shadow:
+            0 25px 60px rgba(15,23,42,.18) !important;
+    }
+
+    .back-btn {
+        transition: .2s ease !important;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+    }
+</style>
+<style id="taskflow-premium-ui">
+
+/* ============================
+   TASKFLOW PREMIUM UI
+   ============================ */
+
+:root {
+    --tf-blue: #2563eb;
+    --tf-blue-dark: #1d4ed8;
+    --tf-blue-light: #60a5fa;
+    --tf-bg: #eff6ff;
+    --tf-white: #ffffff;
+    --tf-text: #172033;
+    --tf-muted: #64748b;
+    --tf-border: #dbeafe;
+    --tf-shadow: 0 20px 50px rgba(30, 64, 175, .14);
+    --tf-radius: 20px;
+}
+
+/* PAGE */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0 !important;
+    min-height: 100vh !important;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif !important;
+
+    color: var(--tf-text) !important;
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(96,165,250,.35),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 95% 10%,
+            rgba(37,99,235,.28),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #1e40af 0%,
+            #2563eb 45%,
+            #0f4cbd 100%
+        ) !important;
+
+    background-attachment: fixed !important;
+}
+
+/* MAIN WRAPPER */
+
+body > div,
+.container,
+.wrapper,
+.main-container,
+.page-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* HEADER / NAVIGATION */
+
+header,
+nav {
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+}
+
+/* TASKFLOW BRAND */
+
+.taskflow-brand {
+    width: min(1120px, calc(100% - 32px));
+    margin: 24px auto 20px;
+    padding: 16px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    color: white;
+
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 22px;
+
+    box-shadow:
+        0 18px 50px rgba(15,23,42,.18),
+        inset 0 1px 0 rgba(255,255,255,.25);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.taskflow-brand-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.taskflow-logo {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+
+    background: white;
+    padding: 3px;
+    border-radius: 16px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.18);
+}
+
+.taskflow-name {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.7px;
+    color: white;
+}
+
+.taskflow-tagline {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: rgba(255,255,255,.78);
+}
+
+.taskflow-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 14px;
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.2);
+
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.taskflow-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 12px rgba(74,222,128,.9);
+}
+
+/* CARDS */
+
+.card,
+.task-card,
+.stat-card,
+.reminder-box,
+.form-card,
+.filter-bar,
+.dashboard-card,
+section {
+    border-radius: var(--tf-radius) !important;
+}
+
+.card,
+.task-card,
+.stat-card,
+.reminder-box,
+.form-card,
+.filter-bar,
+.dashboard-card {
+    background: rgba(255,255,255,.96) !important;
+    border: 1px solid rgba(255,255,255,.75) !important;
+
+    box-shadow: var(--tf-shadow) !important;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease !important;
+}
+
+.card:hover,
+.task-card:hover,
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 28px 60px rgba(30,64,175,.18) !important;
+}
+
+/* HEADINGS */
+
+h1,
+h2,
+h3,
+h4 {
+    letter-spacing: -.5px;
+}
+
+/* INPUTS */
+
+input,
+textarea,
+select {
+    border: 1px solid #dbe3ef !important;
+    border-radius: 12px !important;
+    background: #fff !important;
+    color: #172033 !important;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        transform .2s ease !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+
+    box-shadow:
+        0 0 0 4px rgba(59,130,246,.13) !important;
+}
+
+/* BUTTONS */
+
+button,
+.btn,
+input[type="submit"] {
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        opacity .18s ease !important;
+}
+
+button:hover,
+.btn:hover,
+input[type="submit"]:hover {
+    transform: translateY(-2px);
+}
+
+/* PRIMARY BUTTON */
+
+.btn-primary,
+button[type="submit"],
+.primary-button {
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    ) !important;
+
+    color: white !important;
+
+    border: none !important;
+
+    box-shadow:
+        0 10px 22px rgba(37,99,235,.25) !important;
+}
+
+/* LINKS */
+
+a {
+    transition: color .18s ease, opacity .18s ease;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255,255,255,.15);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.55);
+    border-radius: 999px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .taskflow-brand {
+        width: calc(100% - 24px);
+        margin: 12px auto 16px;
+        padding: 14px;
+    }
+
+    .taskflow-logo {
+        width: 46px;
+        height: 46px;
+        flex-basis: 46px;
+    }
+
+    .taskflow-name {
+        font-size: 20px;
+    }
+
+    .taskflow-tagline {
+        font-size: 11px;
+    }
+
+    .taskflow-status {
+        display: none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+<!-- TASKFLOW PREMIUM BRAND -->
+<div class="taskflow-brand">
+
+    <div class="taskflow-brand-left">
+
+        <img
+            src="{{ url_for('static', filename='img/taskflow-logo.svg') }}"
+            alt="TaskFlow Logo"
+            class="taskflow-logo"
+        >
+
+        <div>
+            <h1 class="taskflow-name">TaskFlow</h1>
+
+            <p class="taskflow-tagline">
+                Organize. Focus. Get things done.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="taskflow-status">
+        <span class="taskflow-status-dot"></span>
+        Workspace Ready
+    </div>
+
+</div>
+<!-- END TASKFLOW PREMIUM BRAND -->
+
+<!-- TASKFLOW_BRAND_V2 -->
+<div class="taskflow-brandbar">
+
+    <div class="taskflow-logo-area">
+
+        <img
+            src="{{ url_for('static', filename='img/taskflow-logo.svg') }}"
+            class="taskflow-logo"
+            alt="TaskFlow logo"
+        >
+
+        <div>
+            <div class="taskflow-name">TaskFlow</div>
+            <div class="taskflow-tagline">
+                Organize. Focus. Get things done.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="page">
+
+    <div class="topbar">
+
+        <div class="brand">
+            <h1>Edit Task</h1>
+            <p>Update the details of your task.</p>
+        </div>
+
+        <a href="{{ url_for('tasks.index') }}" class="back-btn">
+            ? Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-header">
+            <h2>Task Details</h2>
+            <p>Make your changes below and save when you're finished.</p>
+        </div>
+
+
+        <form method="POST">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label for="title">Task Title</label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value="{{ task.title }}"
+                        placeholder="Enter task title"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="description">Description</label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Describe your task..."
+                    >{{ task.description or '' }}</textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="priority">Priority</label>
+
+                    <select id="priority" name="priority">
+
+                        <option value="Low"
+                            {% if task.priority == "Low" %}selected{% endif %}>
+                            Low
+                        </option>
+
+                        <option value="Medium"
+                            {% if task.priority == "Medium" %}selected{% endif %}>
+                            Medium
+                        </option>
+
+                        <option value="High"
+                            {% if task.priority == "High" %}selected{% endif %}>
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="due_date">Due Date</label>
+
+                    <input
+                        type="date"
+                        id="due_date"
+                        name="due_date"
+                        value="{{ task.due_date.strftime('%Y-%m-%d') if task.due_date else '' }}"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="due_time">Due Time</label>
+
+                    <input
+                        type="time"
+                        id="due_time"
+                        name="due_time"
+                        value="{{ task.due_time or '' }}"
+                    >
+
+                    <span class="hint">
+                        You'll receive a reminder when the task is approaching.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                    href="{{ url_for('tasks.index') }}"
+                    class="btn cancel-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn save-btn"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+
