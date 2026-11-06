@@ -521,5 +521,38 @@ a {
     .navbar {
         padding: 16px !important;
     }
+} /* =================================
+   TASK STATUS COLORS - TASKFLOW
+   ================================= */
+
+/* PENDING TASKS - RED */
+.task:not(.completed) {
+    border: 1px solid #fecaca !important;
+    border-left: 6px solid #dc2626 !important;
+    background: #fff1f2 !important;
+    transition: all 0.3s ease;
+}
+
+.task:not(.completed) h3 {
+    color: #b91c1c;
+}
+
+/* COMPLETED TASKS - GREEN */
+.task.completed {
+    border: 1px solid #bbf7d0 !important;
+    border-left: 6px solid #16a34a !important;
+    background: #f0fdf4 !important;
+    transition: all 0.3s ease;
+}
+
+.task.completed h3 {
+    color: #15803d;
+    text-decoration: line-through;
+}
+
+/* HOVER EFFECT */
+.task:not(.completed):hover,
+.task.completed:hover {
+    transform: translateY(-3px);
 }
 
