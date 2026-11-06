@@ -17,41 +17,26 @@
         </div>
     </div>
 
-
     <!-- REMINDERS -->
     {% if reminder_tasks %}
-
     <div class="reminder-box">
-
         <div class="reminder-heading">
-
-            <div class="reminder-icon">
-                ⏰
-            </div>
-
+            <div class="reminder-icon">⏰</div>
             <div>
                 <h2>Upcoming Reminders</h2>
-
                 <p>
-                    You have
-                    <strong>{{ reminder_tasks|length }}</strong>
+                    You have <strong>{{ reminder_tasks|length }}</strong>
                     task{% if reminder_tasks|length != 1 %}s{% endif %}
                     due within the next two hours.
                 </p>
             </div>
-
         </div>
 
-
         <div class="reminder-grid">
-
             {% for task in reminder_tasks %}
-
             <div class="reminder-item">
-
                 <div>
                     <strong>{{ task.title }}</strong>
-
                     {% if task.description %}
                     <p>{{ task.description }}</p>
                     {% endif %}
@@ -59,295 +44,135 @@
 
                 <div class="reminder-time">
                     <span>Due</span>
-                    <strong>
-                        {{ task.due_time }}
-                    </strong>
+                    <strong>{{ task.due_time }}</strong>
                 </div>
-
             </div>
-
             {% endfor %}
-
         </div>
-
     </div>
-
     {% endif %}
-
 
     <!-- STATISTICS -->
     <div class="stats-grid">
-
         <div class="stat-card">
-            <div class="stat-icon total-icon">
-                ✓
-            </div>
-
+            <div class="stat-icon total-icon">✓</div>
             <div>
                 <span>Total Tasks</span>
                 <strong>{{ total_tasks }}</strong>
             </div>
         </div>
 
-
         <div class="stat-card">
-            <div class="stat-icon pending-icon">
-                ◷
-            </div>
-
+            <div class="stat-icon pending-icon">◷</div>
             <div>
                 <span>Pending</span>
                 <strong>{{ pending_tasks }}</strong>
             </div>
         </div>
 
-
         <div class="stat-card">
-            <div class="stat-icon completed-icon">
-                ✓
-            </div>
-
+            <div class="stat-icon completed-icon">✓</div>
             <div>
                 <span>Completed</span>
                 <strong>{{ completed_tasks }}</strong>
             </div>
         </div>
-
     </div>
-
 
     <!-- CREATE TASK -->
     <div class="create-card">
-
         <div class="section-heading">
-
-            <div>
-                <span class="section-label">NEW TASK</span>
-                <h2>Create a Task</h2>
-                <p>Add a meeting, deadline, appointment or anything you need to remember.</p>
-            </div>
-
+            <span class="section-label">NEW TASK</span>
+            <h2>Create a Task</h2>
+            <p>Add a meeting, deadline, appointment or anything you need to remember.</p>
         </div>
 
+        <form class="task-form" method="POST"
+              action="{{ url_for('tasks.create_task') }}">
 
-        <form
-            class="task-form"
-            method="POST"
-            action="{{ url_for('tasks.create_task') }}"
-        >
-
-            <!-- TITLE -->
             <div class="form-group full-width">
-
-                <label for="title">
-                    Task Title
-                </label>
-
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    placeholder="e.g. Team meeting"
-                    required
-                >
-
+                <label for="title">Task Title</label>
+                <input type="text" id="title" name="title"
+                       placeholder="e.g. Team meeting" required>
             </div>
 
-
-            <!-- DESCRIPTION -->
             <div class="form-group full-width">
-
-                <label for="description">
-                    Description
-                </label>
-
-                <textarea
-                    id="description"
-                    name="description"
-                    rows="4"
-                    placeholder="Add details about this task..."
-                ></textarea>
-
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4"
+                          placeholder="Add details about this task..."></textarea>
             </div>
 
-
-            <!-- PRIORITY -->
             <div class="form-group">
-
-                <label for="priority">
-                    Priority
-                </label>
-
-                <select
-                    id="priority"
-                    name="priority"
-                >
-
-                    <option value="Low">
-                        Low
-                    </option>
-
-                    <option
-                        value="Medium"
-                        selected
-                    >
-                        Medium
-                    </option>
-
-                    <option value="High">
-                        High
-                    </option>
-
+                <label for="priority">Priority</label>
+                <select id="priority" name="priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
                 </select>
-
             </div>
 
-
-            <!-- DATE -->
             <div class="form-group">
-
-                <label for="due_date">
-                    Due Date
-                </label>
-
-                <input
-                    type="date"
-                    id="due_date"
-                    name="due_date"
-                >
-
+                <label for="due_date">Due Date</label>
+                <input type="date" id="due_date" name="due_date">
             </div>
 
-
-            <!-- TIME -->
             <div class="form-group">
-
-                <label for="due_time">
-                    Due Time
-                </label>
-
-                <input
-                    type="time"
-                    id="due_time"
-                    name="due_time"
-                >
-
+                <label for="due_time">Due Time</label>
+                <input type="time" id="due_time" name="due_time">
             </div>
 
-
-            <!-- BUTTON -->
             <div class="form-submit full-width">
-
-                <button type="submit">
-                    <span>＋</span>
-                    Add Task
-                </button>
-
+                <button type="submit">＋ Add Task</button>
             </div>
-
         </form>
-
     </div>
-
 
     <!-- FILTERS -->
     <div class="filter-card">
-
-        <form
-            method="GET"
-            class="filter-form"
-        >
+        <form method="GET" class="filter-form">
 
             <div class="search-wrapper">
-
                 <span>⌕</span>
-
-                <input
-                    type="text"
-                    name="search"
-                    placeholder="Search your tasks..."
-                    value="{{ search }}"
-                >
-
+                <input type="text" name="search"
+                       placeholder="Search your tasks..."
+                       value="{{ search }}">
             </div>
 
-
             <select name="status">
-
-                <option
-                    value="all"
-                    {% if status == "all" %}selected{% endif %}
-                >
+                <option value="all" {% if status == "all" %}selected{% endif %}>
                     All Tasks
                 </option>
-
-                <option
-                    value="pending"
-                    {% if status == "pending" %}selected{% endif %}
-                >
+                <option value="pending" {% if status == "pending" %}selected{% endif %}>
                     Pending
                 </option>
-
-                <option
-                    value="completed"
-                    {% if status == "completed" %}selected{% endif %}
-                >
+                <option value="completed" {% if status == "completed" %}selected{% endif %}>
                     Completed
                 </option>
-
             </select>
-
 
             <select name="priority">
-
-                <option
-                    value="all"
-                    {% if priority == "all" %}selected{% endif %}
-                >
+                <option value="all" {% if priority == "all" %}selected{% endif %}>
                     All Priorities
                 </option>
-
-                <option
-                    value="Low"
-                    {% if priority == "Low" %}selected{% endif %}
-                >
+                <option value="Low" {% if priority == "Low" %}selected{% endif %}>
                     Low
                 </option>
-
-                <option
-                    value="Medium"
-                    {% if priority == "Medium" %}selected{% endif %}
-                >
+                <option value="Medium" {% if priority == "Medium" %}selected{% endif %}>
                     Medium
                 </option>
-
-                <option
-                    value="High"
-                    {% if priority == "High" %}selected{% endif %}
-                >
+                <option value="High" {% if priority == "High" %}selected{% endif %}>
                     High
                 </option>
-
             </select>
 
-
-            <button
-                type="submit"
-                class="filter-button"
-            >
-                Filter
-            </button>
-
+            <button type="submit" class="filter-button">Filter</button>
         </form>
-
     </div>
-
 
     <!-- TASK LIST -->
     <div class="tasks-section">
 
         <div class="tasks-heading">
-
             <div>
                 <span class="section-label">YOUR WORK</span>
                 <h2>Your Tasks</h2>
@@ -357,103 +182,73 @@
                 {{ tasks|length }}
                 task{% if tasks|length != 1 %}s{% endif %}
             </span>
-
         </div>
 
-
         {% if tasks %}
-
         <div class="task-grid">
 
             {% for task in tasks %}
 
-            <div class="task-card {% if task.completed %}task-completed{% endif %}">
+            <div class="task-card {% if task.completed %}task-completed{% else %}task-pending{% endif %}">
 
+                <!-- STATUS AND PRIORITY -->
                 <div class="task-card-top">
 
-                    <div class="task-status-dot
-                        {% if task.completed %}
-                            completed
-                        {% else %}
-                            pending
-                        {% endif %}
-                    "></div>
+                    <div class="task-status">
+                        <span class="task-status-dot {% if task.completed %}completed{% else %}pending{% endif %}"></span>
 
+                        <span class="task-status-label {% if task.completed %}completed-label{% else %}pending-label{% endif %}">
+                            {% if task.completed %}
+                                Completed
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </span>
+                    </div>
 
                     <span class="priority-badge priority-{{ task.priority|lower }}">
                         {{ task.priority }}
                     </span>
-
                 </div>
 
-
+                <!-- TASK INFORMATION -->
                 <div class="task-content">
-
-                    <h3>
-                        {{ task.title }}
-                    </h3>
-
+                    <h3>{{ task.title }}</h3>
 
                     {% if task.description %}
-
-                    <p>
-                        {{ task.description }}
-                    </p>
-
+                    <p>{{ task.description }}</p>
                     {% endif %}
-
 
                     <div class="task-details">
 
                         {% if task.due_date %}
-
                         <div class="task-detail">
-
                             <span>📅</span>
-
                             <div>
                                 <small>Due date</small>
-                                <strong>
-                                    {{ task.due_date.strftime('%b %d, %Y') }}
-                                </strong>
+                                <strong>{{ task.due_date.strftime('%b %d, %Y') }}</strong>
                             </div>
-
                         </div>
-
                         {% endif %}
 
-
                         {% if task.due_time %}
-
                         <div class="task-detail">
-
                             <span>⏰</span>
-
                             <div>
                                 <small>Due time</small>
-                                <strong>
-                                    {{ task.due_time }}
-                                </strong>
+                                <strong>{{ task.due_time }}</strong>
                             </div>
-
                         </div>
-
                         {% endif %}
 
                     </div>
-
                 </div>
 
-
+                <!-- TASK ACTIONS -->
                 <div class="task-actions">
 
-                    <a
-                        href="{{ url_for(
-                            'tasks.complete_task',
-                            task_id=task.id
-                        ) }}"
-                        class="action-button complete-button"
-                    >
+                    <a href="{{ url_for('tasks.complete_task', task_id=task.id) }}"
+                       class="action-button complete-button">
                         {% if task.completed %}
                             ↩ Mark Pending
                         {% else %}
@@ -461,26 +256,14 @@
                         {% endif %}
                     </a>
 
-
-                    <a
-                        href="{{ url_for(
-                            'tasks.edit_task',
-                            task_id=task.id
-                        ) }}"
-                        class="action-button edit-button"
-                    >
+                    <a href="{{ url_for('tasks.edit_task', task_id=task.id) }}"
+                       class="action-button edit-button">
                         Edit
                     </a>
 
-
-                    <a
-                        href="{{ url_for(
-                            'tasks.delete_task',
-                            task_id=task.id
-                        ) }}"
-                        class="action-button delete-button"
-                        onclick="return confirm('Are you sure you want to delete this task?');"
-                    >
+                    <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}"
+                       class="action-button delete-button"
+                       onclick="return confirm('Are you sure you want to delete this task?');">
                         Delete
                     </a>
 
@@ -489,38 +272,23 @@
             </div>
 
             {% endfor %}
-
         </div>
 
         {% else %}
 
         <div class="empty-state">
-
-            <div class="empty-icon">
-                ✓
-            </div>
-
+            <div class="empty-icon">✓</div>
             <h3>No tasks found</h3>
-
-            <p>
-                Create your first task above and start organizing your day.
-            </p>
-
+            <p>Create your first task above and start organizing your day.</p>
         </div>
 
         {% endif %}
-
     </div>
 
 </div>
 
-
+<!-- DASHBOARD AND TASK STATUS STYLING -->
 <style>
-
-/* ==========================
-   DASHBOARD
-========================== */
-
 .dashboard {
     width: 100%;
     max-width: 1200px;
@@ -528,15 +296,13 @@
     padding: 30px 20px 60px;
 }
 
-
-/* HEADER */
-
-.dashboard-header {
+.dashboard-header,
+.tasks-heading {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 30px;
+    gap: 20px;
+    margin-bottom: 25px;
 }
 
 .dashboard-label,
@@ -545,47 +311,299 @@
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 1.5px;
-    color: #64748b;
     margin-bottom: 6px;
 }
 
 .dashboard-header h1 {
-    margin: 0;
     font-size: 34px;
-    line-height: 1.1;
-    color: #0f172a;
+    margin: 0;
 }
 
-.dashboard-header p {
-    margin: 8px 0 0;
-    color: #64748b;
+.dashboard-header p,
+.section-heading p {
+    margin-top: 8px;
 }
 
 .dashboard-date {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
     padding: 12px 18px;
     border-radius: 12px;
+    background: white;
     color: #475569;
-    font-size: 14px;
-    white-space: nowrap;
 }
 
-
-/* ==========================
-   REMINDER
-========================== */
-
-.reminder-box {
-    background: linear-gradient(
-        135deg,
-        #fff7ed,
-        #fffbeb
-    );
-    border: 1px solid #fed7aa;
-    border-radius: 18px;
-    padding: 22px;
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
     margin-bottom: 25px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.total-icon { background: #eef2ff; color: #4f46e5; }
+.pending-icon { background: #fff7ed; color: #ea580c; }
+.completed-icon { background: #ecfdf5; color: #059669; }
+
+.stat-card span {
+    display: block;
+    font-size: 13px;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 27px;
+}
+
+.create-card,
+.filter-card,
+.reminder-box {
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+}
+
+.section-heading h2,
+.tasks-heading h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.task-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.form-group { min-width: 0; }
+.full-width { grid-column: 1 / -1; }
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select,
+.filter-form input,
+.filter-form select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.form-submit button,
+.filter-button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #1261d6;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.form-submit button { width: 100%; }
+
+.filter-form {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) 180px 180px 100px;
+    gap: 10px;
+}
+
+.search-wrapper { position: relative; }
+.search-wrapper input { width: 100%; }
+
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.task-card {
+    padding: 20px;
+    border-radius: 17px;
+    transition: .2s ease;
+}
+
+.task-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.task-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.task-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.task-status-label {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.priority-badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.priority-low { background: #f1f5f9; color: #475569; }
+.priority-medium { background: #eff6ff; color: #2563eb; }
+.priority-high { background: #fef2f2; color: #dc2626; }
+
+.task-content h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.task-content > p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0 15px;
+}
+
+.task-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.task-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 11px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.8);
+}
+
+.task-detail small {
+    display: block;
+    font-size: 10px;
+    color: #64748b;
+}
+
+.task-detail strong {
+    display: block;
+    font-size: 12px;
+    color: #334155;
+}
+
+.task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.action-button {
+    display: inline-block;
+    padding: 8px 11px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.complete-button { background: #ecfdf5; color: #047857; }
+.edit-button { background: #eff6ff; color: #2563eb; }
+.delete-button { background: #fef2f2; color: #dc2626; }
+
+/* PENDING TASKS - RED */
+.task-card.task-pending {
+    background: #fff1f2 !important;
+    border: 1px solid #fecaca !important;
+    border-left: 6px solid #dc2626 !important;
+}
+
+.task-card.task-pending .task-content h3 {
+    color: #b91c1c !important;
+}
+
+.task-card.task-pending .task-content > p {
+    color: #7f1d1d !important;
+}
+
+.task-status-dot.pending {
+    background: #dc2626 !important;
+}
+
+.pending-label {
+    color: #b91c1c !important;
+}
+
+/* COMPLETED TASKS - GREEN */
+.task-card.task-completed {
+    background: #f0fdf4 !important;
+    border: 1px solid #bbf7d0 !important;
+    border-left: 6px solid #16a34a !important;
+}
+
+.task-card.task-completed .task-content h3 {
+    color: #15803d !important;
+    text-decoration: line-through;
+}
+
+.task-card.task-completed .task-content > p {
+    color: #166534 !important;
+}
+
+.task-status-dot.completed {
+    background: #16a34a !important;
+}
+
+.completed-label {
+    color: #15803d !important;
+}
+
+.task-card.task-pending:hover,
+.task-card.task-completed:hover {
+    transform: translateY(-3px);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    border-radius: 18px;
+}
+
+.empty-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
 }
 
 .reminder-heading {
@@ -593,28 +611,6 @@
     align-items: center;
     gap: 15px;
     margin-bottom: 18px;
-}
-
-.reminder-icon {
-    width: 46px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fef3c7;
-    border-radius: 13px;
-    font-size: 22px;
-}
-
-.reminder-heading h2 {
-    margin: 0;
-    color: #92400e;
-    font-size: 19px;
-}
-
-.reminder-heading p {
-    margin: 4px 0 0;
-    color: #a16207;
 }
 
 .reminder-grid {
@@ -628,495 +624,17 @@
     align-items: center;
     justify-content: space-between;
     gap: 15px;
-    background: rgba(255,255,255,.75);
-    border: 1px solid #fed7aa;
-    border-radius: 12px;
     padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.8);
 }
 
-.reminder-item strong {
-    color: #78350f;
-}
-
-.reminder-item p {
-    margin: 5px 0 0;
-    color: #92400e;
-    font-size: 13px;
-}
-
-.reminder-time {
-    text-align: right;
-    white-space: nowrap;
-}
-
-.reminder-time span {
-    display: block;
-    font-size: 11px;
-    color: #a16207;
-}
-
-.reminder-time strong {
-    font-size: 17px;
-}
-
-
-/* ==========================
-   STATS
-========================== */
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 20px;
-}
-
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-    font-weight: bold;
-}
-
-.total-icon {
-    background: #eef2ff;
-    color: #4f46e5;
-}
-
-.pending-icon {
-    background: #fff7ed;
-    color: #ea580c;
-}
-
-.completed-icon {
-    background: #ecfdf5;
-    color: #059669;
-}
-
-.stat-card span {
-    display: block;
-    color: #64748b;
-    font-size: 13px;
-    margin-bottom: 3px;
-}
-
-.stat-card strong {
-    display: block;
-    color: #0f172a;
-    font-size: 27px;
-}
-
-
-/* ==========================
-   CREATE CARD
-========================== */
-
-.create-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 26px;
-    margin-bottom: 25px;
-}
-
-.section-heading h2,
-.tasks-heading h2 {
-    margin: 0;
-    color: #0f172a;
-    font-size: 22px;
-}
-
-.section-heading p {
-    margin: 7px 0 22px;
-    color: #64748b;
-    font-size: 14px;
-}
-
-
-/* ==========================
-   FORM
-========================== */
-
-.task-form {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.form-group {
-    min-width: 0;
-}
-
-.full-width {
-    grid-column: 1 / -1;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    color: #334155;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select,
-.filter-form input,
-.filter-form select {
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #cbd5e1;
-    border-radius: 11px;
-    background: #f8fafc;
-    color: #0f172a;
-    padding: 12px 14px;
-    font-size: 14px;
-    outline: none;
-    transition: .2s ease;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 105px;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus,
-.filter-form input:focus,
-.filter-form select:focus {
-    border-color: #6366f1;
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(99,102,241,.10);
-}
-
-.form-submit {
-    margin-top: 2px;
-}
-
-.form-submit button {
-    width: 100%;
-    border: none;
-    border-radius: 11px;
-    padding: 13px 18px;
-    background: #4f46e5;
-    color: white;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 14px;
-    transition: .2s ease;
-}
-
-.form-submit button:hover {
-    background: #4338ca;
-    transform: translateY(-1px);
-}
-
-.form-submit button span {
-    font-size: 18px;
-    vertical-align: -1px;
-}
-
-
-/* ==========================
-   FILTERS
-========================== */
-
-.filter-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 30px;
-}
-
-.filter-form {
-    display: grid;
-    grid-template-columns: minmax(200px, 1fr) 180px 180px 100px;
-    gap: 10px;
-}
-
-.search-wrapper {
-    position: relative;
-}
-
-.search-wrapper > span {
-    position: absolute;
-    left: 13px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #64748b;
-    font-size: 20px;
-}
-
-.search-wrapper input {
-    padding-left: 38px;
-}
-
-.filter-button {
-    border: none;
-    border-radius: 10px;
-    background: #0f172a;
-    color: white;
-    cursor: pointer;
-    font-weight: 700;
-}
-
-
-/* ==========================
-   TASK SECTION
-========================== */
-
-.tasks-section {
-    margin-top: 10px;
-}
-
-.tasks-heading {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.task-count {
-    background: #f1f5f9;
-    color: #475569;
-    border-radius: 999px;
-    padding: 6px 11px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-
-/* ==========================
-   TASK GRID
-========================== */
-
-.task-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.task-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 17px;
-    padding: 20px;
-    transition: .2s ease;
-}
-
-.task-card:hover {
-    border-color: #cbd5e1;
-    transform: translateY(-2px);
-}
-
-.task-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.task-status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-}
-
-.task-status-dot.pending {
-    background: #f59e0b;
-}
-
-.task-status-dot.completed {
-    background: #10b981;
-}
-
-.priority-badge {
-    border-radius: 999px;
-    padding: 5px 10px;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.priority-low {
-    background: #f1f5f9;
-    color: #475569;
-}
-
-.priority-medium {
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-.priority-high {
-    background: #fef2f2;
-    color: #dc2626;
-}
-
-.task-content h3 {
-    margin: 0;
-    color: #0f172a;
-    font-size: 18px;
-}
-
-.task-content > p {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.6;
-    margin: 8px 0 15px;
-}
-
-.task-completed .task-content h3 {
-    text-decoration: line-through;
-    color: #94a3b8;
-}
-
-.task-details {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.task-detail {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #f8fafc;
-    border-radius: 10px;
-    padding: 9px 11px;
-}
-
-.task-detail > span {
-    font-size: 15px;
-}
-
-.task-detail small {
-    display: block;
-    color: #94a3b8;
-    font-size: 10px;
-}
-
-.task-detail strong {
-    display: block;
-    color: #475569;
-    font-size: 12px;
-}
-
-
-/* ==========================
-   ACTIONS
-========================== */
-
-.task-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    border-top: 1px solid #f1f5f9;
-    margin-top: 18px;
-    padding-top: 15px;
-}
-
-.action-button {
-    text-decoration: none;
-    border-radius: 9px;
-    padding: 8px 11px;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.complete-button {
-    background: #ecfdf5;
-    color: #047857;
-}
-
-.edit-button {
-    background: #eff6ff;
-    color: #2563eb;
-}
-
-.delete-button {
-    background: #fef2f2;
-    color: #dc2626;
-}
-
-
-/* ==========================
-   EMPTY STATE
-========================== */
-
-.empty-state {
-    text-align: center;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    padding: 55px 20px;
-}
-
-.empty-icon {
-    width: 55px;
-    height: 55px;
-    margin: 0 auto 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #ecfdf5;
-    color: #059669;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.empty-state h3 {
-    margin: 0;
-    color: #0f172a;
-}
-
-.empty-state p {
-    color: #64748b;
-    margin-top: 7px;
-}
-
-
-/* ==========================
-   MOBILE
-========================== */
+.reminder-time { text-align: right; }
+.reminder-time span { display: block; font-size: 11px; }
 
 @media (max-width: 850px) {
-
-    .dashboard-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .dashboard-date {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .task-grid {
-        grid-template-columns: 1fr;
-    }
-
+    .stats-grid,
+    .task-grid,
     .reminder-grid {
         grid-template-columns: 1fr;
     }
@@ -1125,20 +643,15 @@
         grid-template-columns: 1fr;
     }
 
+    .dashboard-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 600px) {
-
     .dashboard {
         padding: 20px 14px 40px;
-    }
-
-    .dashboard-header h1 {
-        font-size: 28px;
-    }
-
-    .create-card {
-        padding: 18px;
     }
 
     .task-form {
@@ -1149,10 +662,6 @@
         grid-column: auto;
     }
 
-    .task-grid {
-        grid-template-columns: 1fr;
-    }
-
     .reminder-item {
         align-items: flex-start;
         flex-direction: column;
@@ -1161,12 +670,7 @@
     .reminder-time {
         text-align: left;
     }
-
 }
-
 </style>
 
 {% endblock %}
-
-
-
