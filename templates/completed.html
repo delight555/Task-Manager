@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+
+{% block title %}Completed Tasks | TaskFlow{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <section class="dashboard-header">
+        <div>
+            <span class="section-label">YOUR ACHIEVEMENTS</span>
+            <h1>Completed Tasks</h1>
+            <p>Everything you've successfully finished, all in one place.</p>
+        </div>
+
+        <a class="secondary-button" href="{{ url_for('tasks.index') }}">
+            ← Back to Dashboard
+        </a>
+    </section>
+
+    <section class="filter-card">
+        <form method="GET" class="filter-form completed-search">
+            <input type="text" name="search"
+                   placeholder="Search completed tasks...">
+
+            <button class="primary-button" type="submit">Search</button>
+        </form>
+    </section>
+
+    <section class="tasks-section">
+        <div class="tasks-heading">
+            <div>
+                <span class="section-label">YOUR PROGRESS</span>
+                <h2>Finished Tasks</h2>
+            </div>
+
+            <span class="task-count">
+                {{ tasks|length }} completed
+            </span>
+        </div>
+
+        {% if tasks %}
+        <div class="task-grid">
+
+            {% for task in tasks %}
+            <article class="task-card task-completed">
+
+                <div class="task-card-top">
+                    <span class="status completed-label">✓ Completed</span>
+
+                    <span class="priority-badge priority-{{ task.priority|lower }}">
+                        {{ task.priority }}
+                    </span>
+                </div>
+
+                <div class="task-content">
+                    <h3>{{ task.title }}</h3>
+
+                    {% if task.description %}
+                    <p>{{ task.description }}</p>
+                    {% endif %}
+
+                    <div class="task-details">
+                        {% if task.due_date %}
+                        <span>📅 {{ task.due_date.strftime('%b %d, %Y') }}</span>
+                        {% endif %}
+
+                        {% if task.due_time %}
+                        <span>⏰ {{ task.due_time }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="task-actions">
+                    <a class="action-button complete-button"
+                       href="{{ url_for('tasks.complete_task', task_id=task.id) }}">
+                        ↩ Restore Task
+                    </a>
+
+                    <a class="action-button edit-button"
+                       href="{{ url_for('tasks.edit_task', task_id=task.id) }}">
+                        Edit
+                    </a>
+
+                    <a class="action-button delete-button"
+                       href="{{ url_for('tasks.delete_task', task_id=task.id) }}"
+                       onclick="return confirm('Permanently delete this task?');">
+                        Delete
+                    </a>
+                </div>
+
+            </article>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <h3>No completed tasks yet</h3>
+            <p>Tasks you mark as completed will appear here.</p>
+            <a class="primary-button" href="{{ url_for('tasks.index') }}">
+                Go to Dashboard
+            </a>
+        </div>
+        {% endif %}
+
+    </section>
+</div>
+
+{% endblock %}
