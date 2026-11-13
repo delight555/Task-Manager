@@ -1,5 +1,5 @@
-import os
 
+import os
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,3 +12,6 @@ class Config:
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Administrator password comes from a Windows environment variable.
+    ADMIN_PASSWORD = os.environ.get("TASKFLOW_ADMIN_PASSWORD", "")

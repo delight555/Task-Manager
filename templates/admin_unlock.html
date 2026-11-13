@@ -1,0 +1,112 @@
+
+{% extends "base.html" %}
+
+{% block title %}Administrator Access - TaskFlow{% endblock %}
+
+{% block content %}
+
+<style>
+.admin-unlock-container {
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.admin-unlock-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    border-radius: 22px;
+    background: var(--card-bg, white);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+}
+
+.admin-unlock-icon {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: #312e81;
+    color: white;
+    font-size: 30px;
+    margin-bottom: 22px;
+}
+
+.admin-unlock-card h1 {
+    margin-bottom: 10px;
+}
+
+.admin-unlock-card p {
+    opacity: 0.75;
+    margin-bottom: 25px;
+}
+
+.admin-unlock-card label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 9px;
+}
+
+.admin-unlock-card input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    margin-bottom: 18px;
+}
+
+.admin-unlock-card button {
+    width: 100%;
+    padding: 15px;
+    background: #312e81;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.admin-unlock-card button:hover {
+    background: #4338ca;
+}
+</style>
+
+<div class="admin-unlock-container">
+    <div class="admin-unlock-card">
+
+        <div class="admin-unlock-icon">♛</div>
+
+        <h1>Administrator Access</h1>
+
+        <p>
+            Enter your administrator password to activate
+            your account's administrative privileges.
+        </p>
+
+        <form method="POST">
+
+            <label>Administrator Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter administrator password"
+                required
+                autofocus
+            >
+
+            <button type="submit">
+                Unlock Administrator Access →
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

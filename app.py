@@ -17,7 +17,6 @@ def check_expired_tasks(app):
 
     with app.app_context():
 
-        # Import Task inside the application context
         from models.task import Task
 
         now = datetime.now()
@@ -46,7 +45,6 @@ def check_expired_tasks(app):
                 )
 
                 if now >= due_datetime:
-
                     task.completed = True
                     changed = True
 
@@ -66,11 +64,9 @@ def deadline_checker(app):
     while True:
 
         try:
-
             check_expired_tasks(app)
 
         except Exception:
-
             app.logger.exception(
                 "Automatic task completion encountered an error."
             )
@@ -99,9 +95,11 @@ def create_app():
 
     from routes.auth import auth
     from routes.tasks import tasks
+    from routes.admin import admin
 
     app.register_blueprint(auth)
     app.register_blueprint(tasks)
+    app.register_blueprint(admin)
 
     with app.app_context():
 
@@ -110,21 +108,39 @@ def create_app():
 
         db.create_all()
 
-        # Add due_time to existing databases
-        # without deleting existing tasks.
-
         inspector = inspect(db.engine)
 
-        columns = [
+        # Add due_time to older task databases.
+
+        task_columns = [
             column["name"]
             for column in inspector.get_columns("tasks")
         ]
 
-        if "due_time" not in columns:
+        if "due_time" not in task_columns:
 
             db.session.execute(
                 text(
                     "ALTER TABLE tasks ADD COLUMN due_time VARCHAR(5)"
+                )
+            )
+
+            db.session.commit()
+
+        # Add role to existing user databases.
+
+        user_columns = [
+            column["name"]
+            for column in inspector.get_columns("users")
+        ]
+
+        if "role" not in user_columns:
+
+            db.session.execute(
+                text(
+                    "ALTER TABLE users "
+                    "ADD COLUMN role VARCHAR(20) "
+                    "NOT NULL DEFAULT 'user'"
                 )
             )
 

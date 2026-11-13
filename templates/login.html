@@ -1,72 +1,147 @@
+
 {% extends "base.html" %}
 
-{% block title %}
-Login - TaskFlow
-{% endblock %}
-
+{% block title %}Login - TaskFlow{% endblock %}
 
 {% block content %}
 
+<style>
+.auth-home-link {
+    position: fixed;
+    top: 28px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    backdrop-filter: blur(12px);
+    transition: 0.3s ease;
+    z-index: 1000;
+}
+.auth-home-link svg {
+    width: 20px;
+    height: 20px;
+}
+.auth-home-link:hover {
+    background: #ffffff;
+    color: #4f46e5;
+    transform: translateY(-3px);
+}
+.auth-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 45px;
+    border-radius: 24px;
+    background: var(--card-bg, #ffffff);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+}
+.auth-card h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.auth-card > p {
+    margin-bottom: 28px;
+    opacity: 0.75;
+}
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.auth-form label {
+    font-weight: 600;
+    margin-top: 8px;
+}
+.auth-form input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #d7dce5;
+    border-radius: 10px;
+    font-size: 15px;
+}
+.auth-form button {
+    margin-top: 18px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(120deg, #2563eb, #7c3aed);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.auth-form button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+.auth-link {
+    margin-top: 25px;
+    text-align: center;
+}
+.auth-link a {
+    color: #4f46e5;
+    font-weight: 700;
+    text-decoration: none;
+}
+@media(max-width:600px) {
+    .auth-home-link {
+        top: 15px;
+        left: 15px;
+    }
+    .auth-card {
+        padding: 28px 22px;
+    }
+}
+</style>
+
+<a href="{{ url_for('tasks.index') }}" class="auth-home-link">
+    <svg viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10.5L12 3l9 7.5"></path>
+        <path d="M5 9v12h14V9"></path>
+        <path d="M9 21v-7h6v7"></path>
+    </svg>
+    <span>Back to Home</span>
+</a>
+
 <div class="auth-container">
-
     <div class="auth-card">
+        <h1>Welcome back!</h1>
+        <p>Sign in to your account to manage your tasks.</p>
 
-        <h1>Welcome Back</h1>
+        <form method="POST" class="auth-form">
+            <label>Email address</label>
+            <input type="email" name="email"
+                   placeholder="Enter your email" required>
 
-        <p>
-            Sign in to manage your tasks.
-        </p>
+            <label>Password</label>
+            <input type="password" name="password"
+                   placeholder="Enter your password" required>
 
-        <form
-            method="POST"
-            class="form"
-        >
-
-            <label>
-                Email
-            </label>
-
-            <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                required
-            >
-
-
-            <label>
-                Password
-            </label>
-
-            <input
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="btn primary"
-            >
-                Login
-            </button>
-
+            <button type="submit">Sign In →</button>
         </form>
 
         <p class="auth-link">
-
             Don't have an account?
-
-            <a href="{{ url_for('auth.register') }}">
-                Create one
-            </a>
-
+            <a href="{{ url_for('auth.register') }}">Create one</a>
         </p>
-
     </div>
-
 </div>
 
 {% endblock %}
